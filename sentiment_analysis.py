@@ -14,14 +14,14 @@ reviews_data = clean_data['reviews.text'] # Selects the column of reviews we wan
 print("Hello, we are analysing an Amazon Product reviews Data base with 5000 products.")
 
 
-FIRST_REVIEW = -1
-SECOND_REVIEW = -1
+first_review = -1
+second_review = -1
 
-while not (0 <= FIRST_REVIEW <= 4999 and 0 <= SECOND_REVIEW <= 4999):
+while not (0 <= first_review <= 4999 and 0 <= second_review <= 4999):
 
     try:
-        FIRST_REVIEW = int(input("What will be the first review to analyse? "))
-        SECOND_REVIEW = int(input("What will be the second review to analyse? "))
+        first_review = int(input("What will be the first review to analyse? "))
+        second_review = int(input("What will be the second review to analyse? "))
 
     except ValueError:
         print("Please enter integers.")
@@ -72,16 +72,16 @@ def get_sentiment(polarity):
 
 
 # Indexing our review in the DF.
-first_choice_review = reviews_data[FIRST_REVIEW]
-second_choice_review = reviews_data[SECOND_REVIEW]
+first_choice_review = reviews_data[first_review]
+second_choice_review = reviews_data[second_review]
 
 # Tokenizing and removing stopwords.
 clean_first_choice_review = remove_stop_words(tokenize_review(first_choice_review))
 clean_second_choice_review = remove_stop_words(tokenize_review(second_choice_review))
 
 
-print(f"Review nr: {FIRST_REVIEW} : {first_choice_review}")
-print(f"Review nr: {SECOND_REVIEW} : {second_choice_review}")
+print(f"Review nr: {first_review} : {first_choice_review}")
+print(f"Review nr: {second_review} : {second_choice_review}")
 
 
 first_polarity = get_polarity(clean_first_choice_review)
@@ -89,12 +89,12 @@ second_polarity = get_polarity(clean_second_choice_review)
 
 similarity = compare_reviews(clean_first_choice_review , clean_second_choice_review)
 
-FIRST_REVIEW_SENTIMENT = get_sentiment(first_polarity)
-SECOND_REVIEW_SENTIMENT = get_sentiment(second_polarity)
+first_review_sentiment = get_sentiment(first_polarity)
+second_review_sentiment = get_sentiment(second_polarity)
 
 
-print(f"Polarity for review nr {FIRST_REVIEW}: {first_polarity},", end = " " )
-print(f"{FIRST_REVIEW_SENTIMENT} feeling.")
-print(f"Polarity for review nr {SECOND_REVIEW}: {second_polarity},", end = " ")
-print(f"{SECOND_REVIEW_SENTIMENT} feeling.")
+print(f"Polarity for review nr {first_review}: {first_polarity},", end = " " )
+print(f"{first_review_sentiment} feeling.")
+print(f"Polarity for review nr {second_review}: {second_polarity},", end = " ")
+print(f"{second_review_sentiment} feeling.")
 print(f"Similarity between both: {similarity}")
