@@ -1,0 +1,100 @@
+import spacy
+import pandas as pd
+from textblob import TextBlob
+
+
+nlp = spacy.load("en_core_web_md")
+
+
+df = pd.read_csv('Amazon_product_reviews.csv')
+clean_data = df.dropna(subset=['reviews.text']) # Removes blank rows in our reviews.text column.
+reviews_data = clean_data['reviews.text'] # Selects the column of reviews we want to analyse.
+
+
+print("Hello, we are analysing an Amazon Product reviews Data base with 5000 products.")
+
+
+FIRST_REVIEW = -1
+SECOND_REVIEW = -1
+
+while not (0 <= FIRST_REVIEW <= 4999 and 0 <= SECOND_REVIEW <= 4999):
+
+    try:
+        FIRST_REVIEW = int(input("What will be the first review to analyse? "))
+        SECOND_REVIEW = int(input("What will be the second review to analyse? "))
+
+    except ValueError:
+        print("Please enter integers.")
+
+
+def tokenize_review(review):
+    """ Function to tokenize our reviews """
+
+    doc = nlp(review)
+    return doc
+
+
+def remove_stop_words(review):
+    """ Function to remove stop words from reviews """
+
+    # Creates a list with all the words not included in the stop words from Spacy.
+    filtered_review = [token for token in review if not token.is_stop]
+    # Gets our list of filtered tokens back as a spaCy doc.
+    filtered_doc = spacy.tokens.Doc(review.vocab, words=[token.text for token in filtered_review])
+    return filtered_doc
+
+
+def get_polarity(review):
+    """ Function to get the sentiment from a review """
+
+    analisys = TextBlob(review.text)
+    polarity = analisys.polarity
+    return polarity
+
+
+def compare_reviews(review1 , review2):
+    """ Function to compare two reviews and retrieve its similarity coeficient """
+
+    coefficient = review1.similarity(review2)
+    return coefficient
+
+
+def get_sentiment(polarity):
+    """ Function to recieve the polarity and retrieve its sentiment  """
+
+    if 0.2 > polarity > -0.2:
+        return "neutral"
+
+    if 1 >= polarity > 0.2:
+        return "positive"
+
+    return "negative"
+
+
+# Indexing our review in the DF.
+first_choice_review = reviews_data[FIRST_REVIEW]
+second_choice_review = reviews_data[SECOND_REVIEW]
+
+# Tokenizing and removing stopwords.
+clean_first_choice_review = remove_stop_words(tokenize_review(first_choice_review))
+clean_second_choice_review = remove_stop_words(tokenize_review(second_choice_review))
+
+
+print(f"Review nr: {FIRST_REVIEW} : {first_choice_review}")
+print(f"Review nr: {SECOND_REVIEW} : {second_choice_review}")
+
+
+first_polarity = get_polarity(clean_first_choice_review)
+second_polarity = get_polarity(clean_second_choice_review)
+
+similarity = compare_reviews(clean_first_choice_review , clean_second_choice_review)
+
+FIRST_REVIEW_SENTIMENT = get_sentiment(first_polarity)
+SECOND_REVIEW_SENTIMENT = get_sentiment(second_polarity)
+
+
+print(f"Polarity for review nr {FIRST_REVIEW}: {first_polarity},", end = " " )
+print(f"{FIRST_REVIEW_SENTIMENT} feeling.")
+print(f"Polarity for review nr {SECOND_REVIEW}: {second_polarity},", end = " ")
+print(f"{SECOND_REVIEW_SENTIMENT} feeling.")
+print(f"Similarity between both: {similarity}")
