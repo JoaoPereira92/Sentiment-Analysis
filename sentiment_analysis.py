@@ -2,17 +2,13 @@ import spacy
 import pandas as pd
 from textblob import TextBlob
 
-
 nlp = spacy.load("en_core_web_md")
-
 
 df = pd.read_csv('Amazon_product_reviews.csv')
 clean_data = df.dropna(subset=['reviews.text']) # Removes blank rows in our reviews.text column.
 reviews_data = clean_data['reviews.text'] # Selects the column of reviews we want to analyse.
 
-
 print("Hello, we are analysing an Amazon Product reviews Data base with 5000 products.")
-
 
 first_review = -1
 second_review = -1
@@ -70,7 +66,6 @@ def get_sentiment(polarity):
 
     return "negative"
 
-
 # Indexing our review in the DF.
 first_choice_review = reviews_data[first_review]
 second_choice_review = reviews_data[second_review]
@@ -79,10 +74,8 @@ second_choice_review = reviews_data[second_review]
 clean_first_choice_review = remove_stop_words(tokenize_review(first_choice_review))
 clean_second_choice_review = remove_stop_words(tokenize_review(second_choice_review))
 
-
 print(f"Review nr: {first_review} : {first_choice_review}")
 print(f"Review nr: {second_review} : {second_choice_review}")
-
 
 first_polarity = get_polarity(clean_first_choice_review)
 second_polarity = get_polarity(clean_second_choice_review)
@@ -91,7 +84,6 @@ similarity = compare_reviews(clean_first_choice_review , clean_second_choice_rev
 
 first_review_sentiment = get_sentiment(first_polarity)
 second_review_sentiment = get_sentiment(second_polarity)
-
 
 print(f"Polarity for review nr {first_review}: {first_polarity},", end = " " )
 print(f"{first_review_sentiment} feeling.")
