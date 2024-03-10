@@ -10,5 +10,8 @@ Download the files and run Sentiment_analysis.py.
 ### Files
 This project consists of 3 files:
 1. **Amazon_Product_Reviews.csv** - Our database.
+   ![screenshot](images/screenshot%202.png)
 2. **Sentiment_analysis_report** - This consists of a report on how the program works and the positive and negative aspects of the module used. (spaCY)
+
 3. **Sentiment_analysis.py** - Our main program then reads 2 numbers from the user to index the data frame and give back the sentiment and similarities between both.
+![screenshot](images/screenshot%201.png)
